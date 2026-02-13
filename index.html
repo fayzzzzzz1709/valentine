@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Valentine for You 💜</title>
+    <style>
+        :root {
+            --purple: #7b2cbf;
+            --light-purple: #e0aaff;
+            --dark-purple: #3c096c;
+            --bg-color: #f3e5f5;
+            --board-brown: #dcb38c;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Georgia', 'Times New Roman', serif;
+            color: #240046;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden; 
+        }
+
+        /* --- STYLING POP UP TAMBAHAN --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(243, 229, 245, 0.6); /* Warna background transparan */
+            backdrop-filter: blur(10px); /* EFEK BLUR LATAR BELAKANG */
+            -webkit-backdrop-filter: blur(10px); /* Support Safari */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 85%;
+            text-align: center;
+            border: 4px solid var(--purple);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #typing-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #444;
+            min-height: 50px;
+        }
+
+        .btn-confirm {
+            background: var(--purple);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            display: none; /* Muncul setelah teks selesai */
+        }
+
+        /* --- KODE ASLI KAMU TANPA PERUBAHAN --- */
+        header {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: var(--dark-purple);
+            margin-bottom: 10px;
+        }
+
+        .bouquet-outer-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 40px 0;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .gift-box {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            background: var(--purple);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(60, 9, 108, 0.3);
+            transition: all 0.6s ease;
+            z-index: 5;
+        }
+
+        .gift-box::before {
+            content: "";
+            position: absolute;
+            width: 40px;
+            height: 100%;
+            background: var(--light-purple);
+        }
+        .gift-box::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            background: var(--light-purple);
+        }
+
+        .gift-text {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            z-index: 6;
+            text-align: center;
+        }
+
+        .gift-box.opened {
+            transform: scale(0);
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .bouquet-reveal {
+            display: none; 
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1s ease-out;
+            text-align: center;
+            width: 100%;
+        }
+
+        .bouquet-reveal.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .bouquet-img {
+            width: 95%;
+            max-width: 850px; 
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            filter: drop-shadow(0 20px 40px rgba(123, 44, 191, 0.2));
+        }
+
+        .video-container {
+            max-width: 1000px; 
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(60, 9, 108, 0.1);
+            border: 2px solid var(--light-purple);
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        video {
+            width: 100%;
+            max-width: 900px; 
+            border-radius: 15px;
+            border: 5px solid var(--light-purple);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .bulletin-board {
+            max-width: 1000px;
+            width: 100%;
+            background-color: var(--board-brown);
+            background-image: radial-gradient(circle, #c49a6c 1px, transparent 1px);
+            background-size: 20px 20px;
+            padding: 60px 20px;
+            border-radius: 15px;
+            border: 12px solid #8b5a2b;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.2), 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section-title {
+            color: var(--dark-purple);
+            background: white;
+            padding: 5px 20px;
+            border-radius: 50px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .photo-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+            width: 100%;
+            position: relative;
+        }
+
+        .photo-timeline::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: dashed var(--dark-purple);
+            opacity: 0.4;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .photo-item {
+            position: relative;
+            width: 250px;
+            z-index: 2;
+        }
+
+        .photo-item:nth-child(odd) { align-self: flex-start; margin-left: 10%; transform: rotate(-3deg); }
+        .photo-item:nth-child(even) { align-self: flex-end; margin-right: 10%; transform: rotate(3deg); }
+
+        .photo-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border: 10px solid white;
+            border-bottom: 40px solid white; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-radius: 2px;
+            cursor: pointer; /* Menambahkan kursor pointer agar tahu bisa diklik */
+        }
+
+        .photo-item::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #ff4d6d;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .caption {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #444;
+        }
+
+        /* --- STYLING SECARIK KERTAS --- */
+        .sticky-note {
+            background: #fff9c4;
+            width: 200px;
+            padding: 20px;
+            margin-top: 50px;
+            transform: rotate(2deg);
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+            position: relative;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            color: #333;
+            border-left: 2px solid rgba(0,0,0,0.05);
+            z-index: 5;
+        }
+
+        .sticky-note::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        footer { margin: 60px 0; color: var(--purple); font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <div class="modal-overlay" id="popup">
+        <div class="modal-content">
+            <h2 style="color: var(--purple);">Valentine's Greeting Card</h2>
+            <div id="typing-text"></div>
+            <button class="btn-confirm" id="btnConfirm" onclick="closePopup()">Pencet ak plis kalau udah baca </button>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="lagu romantis.mp3" type="audio/mpeg">
+    </audio>
+
+    <header>
+        <h1>Selamat Valentine, Sayang</h1>
+        <p>Allow sayang, ini aku buat untuk kamu lohhhh, aku menyempatkan buat ini untuk kamu (ini dia yang ku bilang surpres ituloh)</p>
+        <p>Terimakasih ya bby karena udah terus sama aku, memaklumi kesalahan aku, dan mau terus maafin aku hehehe</p>
+        <p>Sama kamu aku jadi banyak ngerasain hal yang sebelumnya belum pernah aku rasain, sama kamu aku jadi belajar banyak hal (pake sumpit salah satunya...) Terimakasih banyak ya sayang atas semua hal yang kamu usahain buat kamu dan buat kita</p>
+        <p>Maaf ya aku masih jauh dari kata sempurna kaya yang kamu mau....</p>
+        <p>Dalam hubungan ini aku berharap banyak, that you'll be my last forever. </p>
+        <p>Cz honestly Im feels like "fuck w/ all of shit, God... I just wanna be w/ this one"</p>
+        <p>Dibawah ini ada special gift lohh.. even cuman di web awikwok, dibuka yaa...</p>
+    </header>
+
+    <div class="bouquet-outer-container">
+        <div class="gift-box" id="giftBox" onclick="openGift()">
+            <div class="gift-text">Buka ak plis ah ah</div>
+        </div>
+        <div class="bouquet-reveal" id="bouquetReveal">
+            <img src="buket1.png" alt="Buket Bunga" class="bouquet-img">
+            <p style="font-style: italic; color: var(--purple);">(bunganya disini dulu ya vul, nanti kalo mood baru dikasih beneran)</p>
+        </div>
+    </div>
+
+    <div class="video-container">
+        <h2 class="section-title">Eufaria's Recap</h2>
+        <div class="video-wrapper">
+            <video id="specialVideo" controls>
+                <source src="Eufaria Recap.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <div class="bulletin-board">
+        <h2 class="section-title">Memories Board</h2>
+        <div class="photo-timeline">
+            <div class="photo-item">
+                <img src="first date.jpeg" alt="Ini kita first date" onclick="showMemory('Walaupun ini bukan pertama kali bgt kita ngedate, at least ini pertama kali kita punya foto berdua HAHAHA')">
+                <div class="caption">Ini kita first date <3 </div>
+            </div>
+            <div class="photo-item">
+                <img src="photobooth.jpeg" alt="Momen Pertama" onclick="showMemory('Terus juga ini photobooth pertama kita, jujur aku nervous wir...')">
+                <div class="caption">Our's first Photobooth mwehehe</div>
+            </div>
+            <div class="photo-item">
+                <img src="timezone.jpeg" alt="Kenangan Manis" onclick="showMemory('Terus foto ini detik detik kamu bete kutabrakin awikwok')">
+                <div class="caption">Detik-detik sebelum ditabrak-tabrak</div>
+            </div>
+            <div class="photo-item">
+                <img src="kondangan.jpeg" alt="Sekarang" onclick="showMemory('terus ini day 1 kamu kukenalin sama keluargaku yang seabrek, walaupun kau ga inget samsek panggilannya bruhh..')">
+                <div class="caption">The day ma families knows you...</div>
+            </div>
+        </div>
+
+        <div class="sticky-note">
+            <strong>P.S.</strong><br>
+            Ini first Valentine kita ya sayang, semoga kamu suka sama semua yang udah kubuat ini. Terimakasih sekali lagi untuk semuanya, last but not least. I love you more than all these photos can show. Honestly I Can't wait for more memories with you, sayang. Sehat-sehat dan terus sama aku yaaa :*
+        </div>
+    </div>
+
+    <footer>
+        <p style="text-align: center;">Made by love,<br>Fathir</p>
+    </footer>
+
+    <script>
+        const music = document.getElementById('bgMusic');
+        const video = document.getElementById('specialVideo');
+        
+        const typingElement = document.getElementById('typing-text');
+        const btnConfirm = document.getElementById('btnConfirm');
+        
+        const myMessage = "Allow sayang! Selamat Valentine. Makasih ya udah nemenin aku sejauh ini. Semoga suka ya sama hadiah kecil dari beberapa potongan kode ini. Love you more than anything, darl. 💜";
+        
+        let i = 0;
+        function typeEffect() {
+            if (i < myMessage.length) {
+                typingElement.innerHTML += myMessage.charAt(i);
+                i++;
+                setTimeout(typeEffect, 50); 
+            } else {
+                btnConfirm.style.display = 'inline-block';
+            }
+        }
+
+        window.onload = typeEffect;
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            music.play().catch(e => console.log("User interaction needed."));
+        }
+
+        function openGift() {
+            const gift = document.getElementById('giftBox');
+            gift.classList.add('opened');
+            const bouquet = document.getElementById('bouquetReveal');
+            bouquet.classList.add('show');
+            music.play().catch(e => console.log("User interaction needed."));
+        }
+
+        
+        function showMemory(message) {
+            alert(message);
+        }
+
+        video.onplay = function() { music.pause(); };
+        video.onpause = function() { music.play(); };
+    </script>
+
+</body>
+</html>
